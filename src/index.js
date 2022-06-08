@@ -1,6 +1,6 @@
 import os from 'os';
-import { getUpDirectory } from './utils/navigationDir.mjs';
-import { print, getUserNameFromArg, printCurrentlyDir } from './utils/functions.mjs';
+import { getUpDirectory, moveToDir, readDir } from './utils/navigationDir.mjs';
+import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/functions.mjs';
 import { cmd } from './utils/constant.mjs';
 
 
@@ -11,15 +11,30 @@ let currentDirectory = os.homedir();
 print(`Welcome to the File Manager, ${userName}!${EOL}`);
 printCurrentlyDir(currentDirectory);
 
-process.stdin.on('data', (chunk) => {
+process.stdin.on('data', async (chunk) => {
+
   const action = String(chunk).trim();
-  switch(action) {
+  const [command, path] = action.split(' ');
+
+  switch(command) {
     case cmd.exit: process.exit();
     case cmd.up: {
       currentDirectory = getUpDirectory(currentDirectory);
       break;
     }
-    default: print(`Invalid input${EOL}`);
+    case cmd.cd: {
+      if (!path) {
+        printInvalidInput();
+        break;
+      }
+      currentDirectory = await moveToDir(currentDirectory, path);
+      break;
+    }
+    case cmd.ls: {
+      await readDir(currentDirectory);
+      break;
+    }
+    default: printInvalidInput();
   } 
   printCurrentlyDir(currentDirectory);
 });
