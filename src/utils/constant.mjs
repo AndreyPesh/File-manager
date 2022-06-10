@@ -9,5 +9,6 @@ export const cmd = {
   up: 'up',
   cd: 'cd',
   ls: 'ls',
-  cat: 'cat'
+  cat: 'cat',
+  add: 'add'
 }

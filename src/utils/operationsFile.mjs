@@ -1,4 +1,5 @@
 import { createReadStream } from 'fs';
+import { open } from 'fs/promises';
 import { EOL } from 'os';
 import { print } from './functions.mjs';
 import { FAILED_MESSAGE } from './constant.mjs';
@@ -20,4 +21,12 @@ export const readFile = async (pathToFile) => {
       resolve();
     });
   });
+}
+
+export const createFile = async (pathToFile) => {
+  try {
+    await open(pathToFile, 'wx');
+  } catch{
+    print(`${FAILED_MESSAGE} ${EOL}`);
+  }
 }
