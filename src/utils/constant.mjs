@@ -14,5 +14,10 @@ export const cmd = {
   rn: 'rn',
   cp: 'cp',
   rm: 'rm',
-  mv: 'mv'
+  mv: 'mv',
+  os: 'os'
+}
+
+export const systemFlagInfo = {
+  eol: '--EOL'
 }

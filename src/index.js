@@ -2,6 +2,7 @@ import os from 'os';
 import path from 'path';
 import { getUpDirectory, moveToDir, readDir } from './utils/navigationDir.mjs';
 import { readFile, createFile, renameFile, copy, deleteFile, moveFile } from './utils/operationsFile.mjs';
+import { printSystemInfo, checkFlag } from './utils/systemInfo.mjs';
 import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/functions.mjs';
 import { cmd } from './utils/constant.mjs';
 
@@ -95,6 +96,15 @@ process.stdin.on('data', async (chunk) => {
       const filePath = path.join(currentDirectory, normalizePathToFile);
       const moveFilePath = path.join(currentDirectory, normalizePathToCopyFile, pathToFile);
       await moveFile(filePath, moveFilePath);
+      break;
+    }
+    case cmd.os: {
+      const isFlagExist = checkFlag(pathToFile);
+      if (!pathToFile || !isFlagExist) {
+        printInvalidInput();
+        break;
+      }
+      printSystemInfo(pathToFile);
       break;
     }
     default: printInvalidInput();
