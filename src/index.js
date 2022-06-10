@@ -1,7 +1,7 @@
 import os from 'os';
 import path from 'path';
 import { getUpDirectory, moveToDir, readDir } from './utils/navigationDir.mjs';
-import { readFile, createFile } from './utils/operationsFile.mjs';
+import { readFile, createFile, renameFile } from './utils/operationsFile.mjs';
 import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/functions.mjs';
 import { cmd } from './utils/constant.mjs';
 
@@ -16,7 +16,7 @@ printCurrentlyDir(currentDirectory);
 process.stdin.on('data', async (chunk) => {
 
   const action = String(chunk).trim();
-  const [command, pathToFile] = action.split(' ');
+  const [command, pathToFile, optionalPath] = action.split(' ');
 
   switch(command) {
     case cmd.exit: process.exit();
@@ -52,6 +52,16 @@ process.stdin.on('data', async (chunk) => {
       }
       const fileCreatePath = path.join(currentDirectory, pathToFile);
       await createFile(fileCreatePath);
+      break;
+    }
+    case cmd.rn: {
+      if (!pathToFile || !optionalPath) {
+        printInvalidInput();
+        break;
+      }
+      const filePath = path.join(currentDirectory, pathToFile);
+      const newFilepath = path.join(currentDirectory, optionalPath);
+      await renameFile(filePath, newFilepath);
       break;
     }
     default: printInvalidInput();
