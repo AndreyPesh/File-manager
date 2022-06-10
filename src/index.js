@@ -1,7 +1,7 @@
 import os from 'os';
 import path from 'path';
 import { getUpDirectory, moveToDir, readDir } from './utils/navigationDir.mjs';
-import { readFile, createFile, renameFile, copy, deleteFile } from './utils/operationsFile.mjs';
+import { readFile, createFile, renameFile, copy, deleteFile, moveFile } from './utils/operationsFile.mjs';
 import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/functions.mjs';
 import { cmd } from './utils/constant.mjs';
 
@@ -72,7 +72,7 @@ process.stdin.on('data', async (chunk) => {
       const normalizePathToFile = path.normalize(pathToFile);
       const normalizePathToCopyFile = path.normalize(optionalPath);
       const filePath = path.join(currentDirectory, normalizePathToFile);
-      const copyFilePath = path.join(currentDirectory, normalizePathToCopyFile);
+      const copyFilePath = path.join(currentDirectory, normalizePathToCopyFile, pathToFile);
       await copy(filePath, copyFilePath);
       break;
     }
@@ -83,6 +83,18 @@ process.stdin.on('data', async (chunk) => {
       }
       const pathToFileRemove = path.join(currentDirectory, pathToFile);
       await deleteFile(pathToFileRemove);
+      break;
+    }
+    case cmd.mv: {
+      if (!pathToFile || !optionalPath) {
+        printInvalidInput();
+        break;
+      }
+      const normalizePathToFile = path.normalize(pathToFile);
+      const normalizePathToCopyFile = path.normalize(optionalPath);
+      const filePath = path.join(currentDirectory, normalizePathToFile);
+      const moveFilePath = path.join(currentDirectory, normalizePathToCopyFile, pathToFile);
+      await moveFile(filePath, moveFilePath);
       break;
     }
     default: printInvalidInput();

@@ -55,3 +55,12 @@ export const deleteFile = async (pathToFile) => {
     print(`${FAILED_MESSAGE} ${EOL}`);
   }
 }
+
+export const moveFile = async (pathToFile, pathToMoveFile) => {
+  try {
+    await copyFile(pathToFile, pathToMoveFile);
+    await unlink(pathToFile);
+  } catch {
+    print(`${FAILED_MESSAGE} ${EOL}`);
+  }
+}
