@@ -8,5 +8,6 @@ export const cmd = {
   exit: '.exit',
   up: 'up',
   cd: 'cd',
-  ls: 'ls'
+  ls: 'ls',
+  cat: 'cat'
 }
