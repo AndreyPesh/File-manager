@@ -12,5 +12,6 @@ export const cmd = {
   cat: 'cat',
   add: 'add',
   rn: 'rn',
-  cp: 'cp'
+  cp: 'cp',
+  rm: 'rm'
 }
