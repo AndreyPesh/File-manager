@@ -1,5 +1,5 @@
 import { createReadStream } from 'fs';
-import { open, rename } from 'fs/promises';
+import { open, rename, copyFile } from 'fs/promises';
 import { EOL } from 'os';
 import { print } from './functions.mjs';
 import { FAILED_MESSAGE } from './constant.mjs';
@@ -35,6 +35,14 @@ export const renameFile = async (pathToFile, optionalPath) => {
   try {
     await rename(pathToFile, optionalPath);
   } catch{
+    print(`${FAILED_MESSAGE} ${EOL}`);
+  }
+}
+
+export const copy = async (pathToFile, pathToCopyFile) => {
+  try {
+    await copyFile(pathToFile, pathToCopyFile);
+  } catch {
     print(`${FAILED_MESSAGE} ${EOL}`);
   }
 }

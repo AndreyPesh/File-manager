@@ -1,7 +1,7 @@
 import os from 'os';
 import path from 'path';
 import { getUpDirectory, moveToDir, readDir } from './utils/navigationDir.mjs';
-import { readFile, createFile, renameFile } from './utils/operationsFile.mjs';
+import { readFile, createFile, renameFile, copy } from './utils/operationsFile.mjs';
 import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/functions.mjs';
 import { cmd } from './utils/constant.mjs';
 
@@ -62,6 +62,18 @@ process.stdin.on('data', async (chunk) => {
       const filePath = path.join(currentDirectory, pathToFile);
       const newFilepath = path.join(currentDirectory, optionalPath);
       await renameFile(filePath, newFilepath);
+      break;
+    }
+    case cmd.cp: {
+      if (!pathToFile || !optionalPath) {
+        printInvalidInput();
+        break;
+      }
+      const normalizePathToFile = path.normalize(pathToFile);
+      const normalizePathToCopyFile = path.normalize(optionalPath);
+      const filePath = path.join(currentDirectory, normalizePathToFile);
+      const copyFilePath = path.join(currentDirectory, normalizePathToCopyFile);
+      await copy(filePath, copyFilePath);
       break;
     }
     default: printInvalidInput();
