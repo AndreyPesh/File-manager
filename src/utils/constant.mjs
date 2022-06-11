@@ -16,7 +16,9 @@ export const cmd = {
   rm: 'rm',
   mv: 'mv',
   os: 'os',
-  hash: 'hash'
+  hash: 'hash',
+  compress: 'compress',
+  decompress: 'decompress'
 }
 
 export const systemFlagInfo = {

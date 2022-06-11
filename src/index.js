@@ -6,7 +6,7 @@ import { printSystemInfo, checkFlag } from './utils/systemInfo.mjs';
 import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/functions.mjs';
 import { getHash } from './utils/hash.mjs';
 import { cmd } from './utils/constant.mjs';
-
+import { compress, decompress } from './utils/compress.mjs';
 
 const { EOL } = os;
 const userName = getUserNameFromArg(process.argv);
@@ -20,7 +20,7 @@ process.stdin.on('data', async (chunk) => {
   const action = String(chunk).trim();
   const [command, pathToFile, optionalPath] = action.split(' ');
 
-  switch(command) {
+  switch (command) {
     case cmd.exit: process.exit();
     case cmd.up: {
       currentDirectory = getUpDirectory(currentDirectory);
@@ -116,11 +116,35 @@ process.stdin.on('data', async (chunk) => {
       const filePath = path.join(currentDirectory, pathToFile);
       const hash = await getHash(filePath);
       if (hash) {
-        print(`${ hash } ${ EOL }`);
+        print(`${hash} ${EOL}`);
       }
       break;
+    case cmd.compress: {
+      if (!pathToFile || !optionalPath) {
+        printInvalidInput();
+        break;
+      }
+      const normalizePathToFile = path.normalize(pathToFile);
+      const normalizePathToDestFile = path.normalize(optionalPath);
+      const filePath = path.join(currentDirectory, normalizePathToFile);
+      const destFilePath = path.join(currentDirectory, normalizePathToDestFile);
+      await compress(filePath, destFilePath);
+      break;
+    }
+    case cmd.decompress: {
+      if (!pathToFile || !optionalPath) {
+        printInvalidInput();
+        break;
+      }
+      const normalizePathToFile = path.normalize(pathToFile);
+      const normalizePathToDestFile = path.normalize(optionalPath);
+      const filePath = path.join(currentDirectory, normalizePathToFile);
+      const destFilePath = path.join(currentDirectory, normalizePathToDestFile);
+      await decompress(filePath, destFilePath);
+      break;
+    }
     default: printInvalidInput();
-  } 
+  }
   printCurrentlyDir(currentDirectory);
 });
 
