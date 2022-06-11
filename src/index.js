@@ -74,7 +74,7 @@ process.stdin.on('data', async (chunk) => {
       const normalizePathToFile = path.normalize(pathToFile);
       const normalizePathToCopyFile = path.normalize(optionalPath);
       const filePath = path.join(currentDirectory, normalizePathToFile);
-      const copyFilePath = path.join(currentDirectory, normalizePathToCopyFile, pathToFile);
+      const copyFilePath = path.join(currentDirectory, normalizePathToCopyFile);
       await copy(filePath, copyFilePath);
       break;
     }

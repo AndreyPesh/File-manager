@@ -5,7 +5,7 @@ import { pipeline } from 'stream';
 import { print } from './common.mjs';
 import { FAILED_MESSAGE } from './constant.mjs';
 
-export const readFile = async (pathToFile) => {
+export const readFile = (pathToFile) => {
   return new Promise((resolve) => {
     const readStream = createReadStream(pathToFile);
     readStream.on('data', (chunk) => {
