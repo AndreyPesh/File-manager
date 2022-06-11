@@ -1,4 +1,4 @@
-import { print } from './functions.mjs';
+import { print } from './common.mjs';
 import { systemFlagInfo } from './constant.mjs';
 import os, { EOL } from 'os';
 

@@ -1,7 +1,7 @@
 import { EOL } from 'os';
 import path, { sep } from 'path';
 import { access, readdir } from 'fs/promises';
-import { print } from './functions.mjs';
+import { print } from './common.mjs';
 import { FAILED_MESSAGE } from './constant.mjs';
 
 export const getUpDirectory = (currentDirPath) => {

@@ -3,7 +3,7 @@ import { pipeline } from 'stream/promises';
 import zlib from 'zlib';
 import { EOL } from 'os';
 import { FAILED_MESSAGE } from './constant.mjs';
-import { print } from './functions.mjs';
+import { print } from './common.mjs';
 
 export const compress = async (pathToFile, pathToDest) => {
   try {

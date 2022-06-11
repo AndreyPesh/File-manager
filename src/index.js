@@ -3,7 +3,7 @@ import path from 'path';
 import { getUpDirectory, moveToDir, readDir } from './utils/navigationDir.mjs';
 import { readFile, createFile, renameFile, copy, deleteFile, moveFile } from './utils/operationsFile.mjs';
 import { printSystemInfo, checkFlag } from './utils/systemInfo.mjs';
-import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/functions.mjs';
+import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/common.mjs';
 import { getHash } from './utils/hash.mjs';
 import { cmd } from './utils/constant.mjs';
 import { compress, decompress } from './utils/compress.mjs';
