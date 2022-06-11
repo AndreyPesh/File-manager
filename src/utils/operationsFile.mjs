@@ -1,7 +1,8 @@
-import { createReadStream } from 'fs';
-import { open, rename, copyFile, unlink } from 'fs/promises';
+import { createReadStream, createWriteStream } from 'fs';
+import { open, rename, unlink } from 'fs/promises';
 import { EOL } from 'os';
-import { print } from './functions.mjs';
+import { pipeline } from 'stream';
+import { print } from './common.mjs';
 import { FAILED_MESSAGE } from './constant.mjs';
 
 export const readFile = async (pathToFile) => {
@@ -27,7 +28,7 @@ export const createFile = async (pathToFile) => {
   try {
     const file = await open(pathToFile, 'wx+');
     file.close();
-  } catch{
+  } catch {
     print(`${FAILED_MESSAGE} ${EOL}`);
   }
 }
@@ -35,17 +36,23 @@ export const createFile = async (pathToFile) => {
 export const renameFile = async (pathToFile, optionalPath) => {
   try {
     await rename(pathToFile, optionalPath);
-  } catch{
+  } catch {
     print(`${FAILED_MESSAGE} ${EOL}`);
   }
 }
 
-export const copy = async (pathToFile, pathToCopyFile) => {
-  try {
-    await copyFile(pathToFile, pathToCopyFile);
-  } catch {
-    print(`${FAILED_MESSAGE} ${EOL}`);
-  }
+export const copy = (pathToFile, pathToCopyFile) => {
+  const readStream = createReadStream(pathToFile);
+  const writeStream = createWriteStream(pathToCopyFile);
+  return new Promise(resolve => {
+    pipeline(readStream, writeStream, (err) => {
+      if (err) {
+        print(`${FAILED_MESSAGE} ${EOL}`);
+        resolve(false);
+      }
+      resolve(true);
+    });
+  });
 }
 
 export const deleteFile = async (pathToFile) => {
@@ -58,8 +65,10 @@ export const deleteFile = async (pathToFile) => {
 
 export const moveFile = async (pathToFile, pathToMoveFile) => {
   try {
-    await copyFile(pathToFile, pathToMoveFile);
-    await unlink(pathToFile);
+    const isSuccessfulCopy = await copy(pathToFile, pathToMoveFile);
+    if (isSuccessfulCopy) {
+      await unlink(pathToFile);
+    }
   } catch {
     print(`${FAILED_MESSAGE} ${EOL}`);
   }
