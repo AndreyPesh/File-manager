@@ -11,6 +11,15 @@ export const printSystemInfo = (flag) => {
     case systemFlagInfo.cpu:
       printCPUInfo();
       break;
+    case systemFlagInfo.homedir:
+      print(`Homedir: ${os.homedir()} ${EOL}`);
+      break;
+    case systemFlagInfo.username:
+      print(`User: ${os.userInfo().username} ${EOL}`);
+      break;
+    case systemFlagInfo.arch:
+      print(`CPU architecture: ${os.arch()} ${EOL}`);
+      break;
     default:
       break;
   }

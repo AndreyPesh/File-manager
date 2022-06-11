@@ -20,5 +20,8 @@ export const cmd = {
 
 export const systemFlagInfo = {
   eol: '--EOL',
-  cpu: '--cpus'
+  cpu: '--cpus',
+  homedir: '--homedir',
+  username: '--username',
+  arch: '--architecture'
 }
