@@ -4,6 +4,7 @@ import { getUpDirectory, moveToDir, readDir } from './utils/navigationDir.mjs';
 import { readFile, createFile, renameFile, copy, deleteFile, moveFile } from './utils/operationsFile.mjs';
 import { printSystemInfo, checkFlag } from './utils/systemInfo.mjs';
 import { print, getUserNameFromArg, printCurrentlyDir, printInvalidInput } from './utils/functions.mjs';
+import { getHash } from './utils/hash.mjs';
 import { cmd } from './utils/constant.mjs';
 
 
@@ -107,6 +108,17 @@ process.stdin.on('data', async (chunk) => {
       printSystemInfo(pathToFile);
       break;
     }
+    case cmd.hash:
+      if (!pathToFile) {
+        printInvalidInput();
+        break;
+      }
+      const filePath = path.join(currentDirectory, pathToFile);
+      const hash = await getHash(filePath);
+      if (hash) {
+        print(`${ hash } ${ EOL }`);
+      }
+      break;
     default: printInvalidInput();
   } 
   printCurrentlyDir(currentDirectory);
